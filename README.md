@@ -17,8 +17,7 @@ frontend services:
 * [motife](https://github.com/regione-piemonte/moti-motife): Angular application
 transversal:
 * [motidb](https://github.com/regione-piemonte/moti-motidb): database implementation, with all the required scripts
-* [motimanual](https://github.com/regione-piemonte/moti-motimanual): user manual
-* motiscript: CLI scripts to be invoked by a scheduler (WIP)
+
 # Configurations
 For the configuration of each single module, please refer to the README.md file which is present in each module.
 
