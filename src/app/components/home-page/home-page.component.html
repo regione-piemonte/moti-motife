@@ -1,0 +1,160 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+
+    <form [formGroup]="formSearchIntervento">
+
+        <div class="row">
+
+            <div class="col-md-7 col-sm-12 mb-3 ">
+                <div class="box-home">
+
+                    <div class="row">
+                        <div class="col-1">
+                            &nbsp;
+                        </div>
+
+                        <!-- inizio no tab -- >
+                        <div class="col-7">
+                            <div class="form-group ">
+                                <span class="ricerca-text-1">{{ 'APP.SEARCH_INTERVENTION' | translate }} </span><br>
+                                <span class="ricerca-text-2">{{ 'APP.SEARCH_INTERVENTION_DETAILS' | translate }}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="codInterventoInput"
+                                    formControlName="codIntervento" motiHasValueClass motiIsInvalidClass>
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                                <label class="float-label" for="codInterventoInput">
+                                    {{ 'INT.INTERVENTION.FIELD.CODE' | translate }}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" class="btn btn-primary rounded font-weight-bold"
+                                    (click)="onClickCerca('code')"
+                                    value="{{ 'APP.SEARCH_INTERVENTION_BUTTON' | translate }}">
+                            </div>
+                        </div>
+                        <div class="col-2 mt-5">
+                            <img src="assets/img/Cerca.png" class="moti-cerca-img" alt="Cerca intervento">
+                        </div>
+                        <! -- fine no tab -->
+
+                        <!-- inizio con tab -->
+                        <div class="col-10">
+                            <div class="form-group ">
+                                <span class="ricerca-text-1">{{ 'APP.SEARCH_FAST_INTERVENTION' | translate }} </span><br>
+                                <span class="ricerca-text-2">{{ 'APP.SEARCH_FAST_INTERVENTION_DETAILS' | translate }}</span>
+                            </div>
+
+                            <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                                <li class="nav-item"><a class="nav-link {{ tabTitolo ? 'active':'' }}" id="tab1-tab"
+                                        data-toggle="tab" role="tab" aria-controls="tab1" (click)="clickTab('titolo')"
+                                        aria-selected="true">{{ 'INT.INTERVENTION.FIELD.TITLE' | translate }}</a></li>
+                                <li class="nav-item"><a class="nav-link {{ tabCode ? 'active':'' }}" id="tab2-tab"
+                                        data-toggle="tab" role="tab" aria-controls="tab2" [routerLink]=""
+                                        (click)="clickTab('code')"
+                                        aria-selected="false">{{ 'INT.INTERVENTION.FIELD.CODE' | translate }}</a></li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane p-4 fade {{ tabTitolo ? 'show active':'' }} moti-tab-panel"
+                                    id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+                                    <div class="form-group pl-4 pr-5">
+                                        <input type=" text" class="form-control" id="titoloInput"
+                                            formControlName="titolo" motiHasValueClass>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label" for="titoloInput">
+                                            {{ 'INT.INTERVENTION.FIELD.TITLE' | translate }}
+                                        </label>
+
+                                        <br>
+                                        <input type="button" class="btn btn-primary rounded font-weight-bold"
+                                            (click)="onClickCerca('titolo')"
+                                            value="{{ 'APP.SEARCH_INTERVENTION_BUTTON' | translate }}">
+                                    </div>
+                                </div>
+                                <div class="tab-pane p-4 fade {{ tabCode ? 'show active':'' }} moti-tab-panel" id="tab2"
+                                    role="tabpanel" aria-labelledby="tab2-tab">
+                                    <div class="form-group pl-4 pr-5">
+                                        <input type="text" class="form-control" id="codInterventoInput"
+                                            formControlName="codIntervento" motiHasValueClass>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label" for="codInterventoInput">
+                                            {{ 'INT.INTERVENTION.FIELD.CODE' | translate }}
+                                        </label>
+
+                                        <br>
+                                        <input type="button" class="btn btn-primary rounded font-weight-bold"
+                                            (click)="onClickCerca('code')"
+                                            value="{{ 'APP.SEARCH_INTERVENTION_BUTTON' | translate }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- fine con tab -->
+
+                        <div class="col-1">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-5 col-sm-12 pl-0">
+
+                <div class="row box-lista-interventi">
+                    <div class="col-1">
+                        &nbsp;
+                    </div>
+                    <div class="moti-icon col-2">
+                        <a class="logo-lista-intervento" href="#" target="_blank">
+                            <img src="assets/img/Lista_interventi.png" alt="Lista interventi">
+                        </a>
+                    </div>
+                    <div class="form-group col-8">
+                        <span class="ricerca-text-1b">{{ 'APP.LIST_INTERVENTIONS' | translate }} </span><br>
+                        <span class="ricerca-text-2"> {{ 'APP.LIST_INTERVENTIONS_DETAILS' | translate }} </span>
+
+                        <div class="mt-4">
+                            <input type="button" class="btn btn-primary rounded font-weight-bold"
+                                (click)="onClickRicerca()" value="{{ 'APP.LIST_INTERVENTIONS' | translate }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row box-lista-interventi">
+                    <div class="col-1">
+                        &nbsp;
+                    </div>
+                    <div class="moti-icon col-2">
+                        <a class="logo-inserisci-interventi" href="#" target="_blank">
+                            <img src="assets/img/Inserisci_interventi.png"
+                                style="background: transparent 0% 0% no-repeat padding-box;" alt="Inserisci intervento">
+                        </a>
+                    </div>
+                    <div class="form-group col-8">
+                        <span class="ricerca-text-1b">{{ 'APP.INSERT_INTERVENTION' | translate }} </span><br>
+                        <span class="ricerca-text-2"> {{ 'APP.INSERT_INTERVENTION_DETAILS' | translate }} </span>
+
+                        <div class="mt-4">
+                            <input type="button" class="btn btn-primary rounded font-weight-bold"
+                                (click)="onClickInserisci()" value="{{ 'APP.INSERT_INTERVENTION' | translate }}">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>

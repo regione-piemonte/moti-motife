@@ -1,0 +1,1261 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+    <div class="moti-nav">
+        <!-- <a [routerLink]="['/']">&lt;&nbsp;&nbsp;&nbsp;{{ 'APP.BACK' | translate }}</a> -->
+        <a [routerLink]="" (click)="onBack()">&lt;&nbsp;&nbsp;&nbsp;{{ 'APP.BACK' | translate }}</a>
+
+        <ul class="nav float-right">
+            <li>
+                <button type="button" class="btn btn-outline-success ml-auto"
+                    *ngIf="initialIntervento?.id && !controlDisabled"
+                    [disabled]="controlDisabled || !formIntervento.valid || !isMultiselectValid()"
+                    (click)="onClickSalva()">{{ 'APP.SAVE_CHANGES' | translate }}</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-info ml-auto" *ngIf="initialIntervento?.id"
+                    [disabled]="!controlDisabled" (click)="onClickModifica()">{{ 'APP.MODIFY' | translate }}</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-outline-info ml-auto" *ngIf="initialIntervento?.id"
+                    (click)="onClickEsporta()">{{ 'APP.EXPORT' | translate }}</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-outline-danger ml-auto" *ngIf="initialIntervento?.id"
+                    (click)="onClickElimina()">{{ 'APP.DELETE' | translate }}</button>
+            </li>
+        </ul>
+
+    </div>
+
+    <form [formGroup]="formIntervento" *ngIf="intervento">
+
+        <div class="moti-testata">
+
+            <div class="row">
+                <div class="form-group col-12 col-sm-12 col-md-12">
+                    <input type="text" class="form-control moti-input-bold" id="titoloInput" formControlName="titolo"
+                        maxlength="200" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="titoloInput">{{ 'INT.INTERVENTION.FIELD.TITLE' | translate }}
+                        <span class="text-required">*</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <input type="text" class="form-control moti-input-bold" id="codInterventoInput"
+                        formControlName="codIntervento" maxlength="10" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="codInterventoInput">{{ 'INT.INTERVENTION.FIELD.CODE' | translate }}
+                        <span class="text-required">*</span>
+                    </label>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <ng-select class="form-control moti-input-bold" [items]="elencoFonteDati" [virtualScroll]="true"
+                        bindLabel="descrizione" formControlName="fonteDati" motiIsInvalidClass>
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <span>{{ item.descrizione }}</span>
+                        </ng-template>
+                    </ng-select>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label for="prioritaInput" class="float-label">{{ 'INT.INTERVENTION.FIELD.SOURCE' | translate
+                        }}</label>
+                    <div *ngIf="fControls.fonteDati.touched && fControls.fonteDati.errors" class="text-danger">
+                        {{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-1">
+            &nbsp;
+        </div>
+
+        <ngb-accordion #accordionDatiGenerali id="accordion-dati-generali" [activeIds]="activeIds"
+            class="accordion-moti">
+            <ngb-panel id="panelDatiGenerali">
+                <ng-template ngbPanelHeader let-opened="opened">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="moti-accordion-title">{{ 'INT.INTERVENTION.SECTION.GENERAL_DATA' | translate
+                            }}</span>
+                        <button ngbPanelToggle class="btn btn-link p-0 moti-accordion-button">{{ (opened ? 'APP.HIDE' :
+                            'APP.SHOW') | translate }}
+                            &nbsp;
+                            <i class="fas fa-angle-up rotate-icon" *ngIf="opened"></i>
+                            <i class="fas fa-angle-down rotate-icon" *ngIf="!opened"></i>
+                        </button>
+                    </div>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-12 col-md-12" formGroupName="attuatoreObj">
+
+                            <!-- <input type="text" class="form-control" id="attuatoreInput" formControlName="descrizione"
+                                maxlength="200" (click)="onKeydownAttuatore()" motiHasValueClass motiIsInvalidClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="attuatoreInput">
+                                {{ 'INT.INTERVENTION.FIELD.ACTUATOR' | translate }}
+                                <span class="text-required">*</span>
+                            </label> -->
+
+                            <ng-select appendTo="body" class="form-control" [items]="modalElencoAttuatori"
+                                [virtualScroll]="false" bindLabel="descrizione" formControlName="descrizione"
+                                motiIsInvalidClass [isOpen]="false" (click)="onKeydownAttuatore()" [searchable]="false">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-select-value ng-value-label">
+                                        {{ item.descrizione }} - {{ item.codiceFiscale }}
+                                    </span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span>{{ item.descrizione }} - {{ item.codiceFiscale }}</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="settoreInput" class="float-label">
+                                {{ 'INT.INTERVENTION.FIELD.ACTUATOR' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-4 col-md-4">
+                            <ng-select appendTo="body" class="form-control" [items]="elencoTipologia"
+                                [virtualScroll]="true" bindLabel="descrizione" formControlName="tipologia"
+                                motiIsInvalidClass>
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span>{{ item.descrizione }}</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="tipologiaInput" class="float-label">
+                                {{ 'INT.INTERVENTION.FIELD.TYPOLOGY' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group col-12 col-sm-8 col-md-8">
+                            <ng-select appendTo="body" class="form-control" [items]="elencoSettore"
+                                [virtualScroll]="false" bindLabel="descrizione" formControlName="settore"
+                                motiIsInvalidClass>
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span>{{ item.descrizione }}</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="settoreInput" class="float-label">
+                                {{ 'INT.INTERVENTION.FIELD.SECTOR' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <ng-select appendTo="body" [items]="elencoReferente" [multiple]="true"
+                                [closeOnSelect]="false" [searchable]="true" bindLabel="cognome"
+                                class="form-control-multiselect " [(ngModel)]="selectedReferentes"
+                                [ngModelOptions]="{standalone: true}" #refElReferente
+                                (focusout)="checkValidReferente()">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-value ng-value-label">{{ item.cognome + ' ' + item.nome
+                                        }}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">
+                                        <font style="color: black">×</font>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span>{{ item.cognome + ' ' + item.nome }}</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="referenteInput" class="float-label">
+                                {{ 'INT.INTERVENTION.FIELD.REFERENT' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+
+                            <!-- <ul>
+                                <li *ngFor="let item of selectedPeople">{{item.id}} {{item.cognome}} {{item.nome}}</li>
+                            </ul> -->
+                        </div>
+
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <ng-select appendTo="body" [items]="elencoLuogo" [multiple]="true" [closeOnSelect]="false"
+                                [searchable]="true" bindLabel="denomLuogo" class="form-control-multiselect"
+                                [(ngModel)]="selectedLuogos" [ngModelOptions]="{standalone: true}" #refElLuogo
+                                (focusout)="checkValidLuogo()">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-value ng-value-label">{{ item.denomLuogo }}
+                                        ({{ item.sigla }})</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">
+                                        <font style="color: black">×</font>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span *ngIf="item.flagProvincia" style="font-style: italic">{{ item.denomLuogo }}
+                                        ({{ item.sigla }})</span>
+                                    <span *ngIf="!item.flagProvincia">{{ item.denomLuogo }} ({{ item.sigla }})</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="luogoInput" class="float-label">{{ 'INT.INTERVENTION.FIELD.PLACE' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+
+                            <!-- <ul>
+                                <li *ngFor="let item of selectedLuogos">{{item.denomLuogo}}</li>
+                            </ul> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6 col-md-4">
+                            <input type="text" class="form-control" id="cupInput" formControlName="cup" maxlength="15"
+                                motiHasValueClass motiIsInvalidClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="cupInput">{{ 'INT.INTERVENTION.FIELD.CUP' | translate
+                                }}</label>
+                            <div *ngIf="fControls.cup.touched && fControls.cup.errors" class="moti-text-danger">
+                                <div *ngIf="fControls.cup.errors.wrongLength">
+                                    {{ 'ERROR.FIELD.LENGTH_INVALID' | translate : { leng: 15 } }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-4">
+                            <input type="text" class="form-control" id="cigInput" formControlName="cig" maxlength="10"
+                                motiHasValueClass motiIsInvalidClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="cigInput">{{ 'INT.INTERVENTION.FIELD.CIG' | translate
+                                }}</label>
+                            <div *ngIf="fControls.cig.touched && fControls.cig.errors" class="moti-text-danger">
+                                <div *ngIf="fControls.cig.errors.wrongLength">
+                                    {{ 'ERROR.FIELD.LENGTH_INVALID' | translate : { leng: 10 } }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <textarea rows="5" class="form-control form-control-textarea" id="descrTecnicaInput"
+                                formControlName="descrTecnica" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="descrTecnicaInput">{{
+                                'INT.INTERVENTION.FIELD.TECNICAL_DESCR' | translate }}</label>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <div class="row-1">
+            &nbsp;
+        </div>
+
+        <ngb-accordion #accordionStatiDiAttuazione id="accordion-state-od-implementation" [activeIds]="activeIds"
+            class="accordion-moti">
+            <ngb-panel title="" id="panelStatiDiAttuazione">
+                <ng-template ngbPanelHeader let-opened="opened">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="moti-accordion-title">
+                            {{ 'INT.INTERVENTION.SECTION.STATE_OF_IMPLEMENTATION' | translate }}
+                        </span>
+                        <button ngbPanelToggle class="btn btn-link p-0 moti-accordion-button">
+                            {{ (opened ? 'APP.HIDE' : 'APP.SHOW') | translate }}
+                            &nbsp;
+                            <i class="fas fa-angle-up rotate-icon" *ngIf="opened"></i>
+                            <i class="fas fa-angle-down rotate-icon" *ngIf="!opened"></i>
+                        </button>
+                    </div>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6 col-md-4">
+                            <ng-select appendTo="body" class="form-control" [items]="elencoStatoAttuaz"
+                                [virtualScroll]="true" bindLabel="descrizione" formControlName="statoAttuaz"
+                                motiIsInvalidClass>
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span>{{ item.descrizione }}</span>
+                                </ng-template>
+
+                            </ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="statoAttuazInput" class="float-label">
+                                {{ 'INT.INTERVENTION.FIELD.STATE_IMPLEMENTATION' | translate }}
+                                <span class="text-required">*</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- fasi programmazione -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.PROGRAMMING' | translate }}
+                            <span class="moti-text-gray">
+                                {{ 'INT.INTERVENTION.SECTION.PROGRAMMING_DESC' | translate }}
+                            </span>
+                        </div>
+                    </div>
+                    <div formArrayName="fasiProgrammazione">
+                        <div class="row" *ngFor="let order of fFasiProgrammazione.controls; let i = index"
+                            [formGroupName]="i">
+
+                            <div class="form-group col-12 col-sm-6 col-md-6">
+                                <ng-select appendTo="body" class="form-control" [items]="elencoFaseProgrammazione"
+                                    [virtualScroll]="true" bindLabel="descrizione" formControlName="fase"
+                                    (focusout)="verificaFaseProgrammazione(i)" (change)="verificaFaseProgrammazione(i)"
+                                    motiIsInvalidClass>
+
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <span>{{ item.descrizione }}</span>
+                                    </ng-template>
+
+                                </ng-select>
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                                <label for="faseInput" class="float-label">
+                                    {{ 'INT.INTERVENTION.FIELD.PHASE' | translate }}
+                                    <span class="text-required">*</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="dataPrevistaInput"
+                                        formControlName="dataPrevista" motiHasValueClass maxlength="10"
+                                        motiIsInvalidClass ngbDatepicker #d_dataPrevista="ngbDatepicker"
+                                        (dateSelect)="triggerUiUpdate()">
+                                    <div class="input-group-append">
+                                        <i class="far fa-calendar-alt" (click)="d_dataPrevista.toggle()"></i>
+                                    </div>
+                                    <span class="form-highlight"></span>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label" for="dataPrevistaInput">{{
+                                        'INT.INTERVENTION.FIELD.DATE_END_EXPECTED' | translate }}</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="dataEffettivaInput"
+                                        formControlName="dataEffettiva" motiHasValueClass maxlength="10"
+                                        motiIsInvalidClass ngbDatepicker #d_dataEffettiva="ngbDatepicker"
+                                        (dateSelect)="triggerUiUpdate()">
+                                    <div class="input-group-append">
+                                        <i class="far fa-calendar-alt" (click)="d_dataEffettiva.toggle()"></i>
+                                    </div>
+                                    <span class="form-highlight"></span>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label" for="dataEffettivaInput">{{
+                                        'INT.INTERVENTION.FIELD.DATE_END_EFFECTIVE' | translate }}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <button type="button" class="btn btn-outline-danger ml-auto"
+                                    *ngIf="!controlDisabled && btnEliminaFaseProgrammazioneEnabled(i)"
+                                    (click)="eliminaFaseProgrammazione(i)"><i class="fas fa-trash-alt"></i>
+                                    {{ 'APP.DELETE_PHASE' | translate }}</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-left left-btns">
+                            <button type="button" class="btn btn-info ml-auto" *ngIf="!controlDisabled"
+                                (click)="aggiungiFaseProgrammazione()">{{ 'APP.ADD_PHASE' | translate }}</button>
+                        </div>
+                    </div>
+
+                    <!-- textareas programmazione -->
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <textarea rows="3" class="form-control form-control-textarea"
+                                id="fonteDatiProgrammazioneInput" formControlName="fonteDatiProgrammazione"
+                                maxlength="500" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="fonteDatiProgrammazioneInput">{{
+                                'INT.INTERVENTION.FIELD.DATA_SOURCE_PROGRAMMING' | translate }}</label>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <textarea rows="3" class="form-control form-control-textarea" id="noteProgrammazioneInput"
+                                formControlName="noteProgrammazione" motiHasValueClass motiIsInvalidClass
+                                maxlength="4000"></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="noteProgrammazioneInput">{{
+                                'INT.INTERVENTION.FIELD.NOTE_PROGRAMMING' | translate }}</label>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+
+                    <!-- fasi realizzazione -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.IMPLEMENTATION' | translate }}
+                            <span class="moti-text-gray">
+                                {{ 'INT.INTERVENTION.SECTION.IMPLEMENTATION_DESC' | translate }}
+                            </span>
+                        </div>
+                    </div>
+                    <div formArrayName="fasiRealizzazione">
+                        <div class="row" *ngFor="let order of fFasiRealizzazione.controls; let i = index"
+                            [formGroupName]="i">
+
+                            <div class="form-group col-12 col-sm-6 col-md-6">
+                                <ng-select appendTo="body" class="form-control" [items]="elencoFaseRealizzazione"
+                                    bindLabel="descrizione" motiIsInvalidClass formControlName="fase"
+                                    (focusout)="verificaFaseRealizzazione(i)" (change)="verificaFaseRealizzazione(i)">
+
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <span>{{ item.descrizione }}</span>
+                                    </ng-template>
+
+                                </ng-select>
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                                <label for="faseInput" class="float-label">
+                                    {{ 'INT.INTERVENTION.FIELD.PHASE' | translate }}
+                                    <span class="text-required">*</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="dataPrevistaInput"
+                                        formControlName="dataPrevista" motiHasValueClass maxlength="10"
+                                        motiIsInvalidClass ngbDatepicker #d_dataPrevista="ngbDatepicker"
+                                        (dateSelect)="triggerUiUpdate()">
+                                    <div class="input-group-append">
+                                        <i class="far fa-calendar-alt" (click)="d_dataPrevista.toggle()"></i>
+                                    </div>
+                                    <span class="form-highlight"></span>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label" for="dataPrevistaInput">{{
+                                        'INT.INTERVENTION.FIELD.DATE_END_EXPECTED' | translate }}</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="dataEffettivaInput"
+                                        formControlName="dataEffettiva" motiHasValueClass maxlength="10"
+                                        motiIsInvalidClass ngbDatepicker #d_dataEffettiva="ngbDatepicker"
+                                        (dateSelect)="triggerUiUpdate()">
+                                    <div class="input-group-append">
+                                        <i class="far fa-calendar-alt" (click)="d_dataEffettiva.toggle()"></i>
+                                    </div>
+                                    <span class="form-highlight"></span>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label" for="dataEffettivaInput">{{
+                                        'INT.INTERVENTION.FIELD.DATE_END_EFFECTIVE' | translate }}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <button type="button" class="btn btn-outline-danger ml-auto"
+                                    *ngIf="!controlDisabled && btnEliminaFaseRealizzazioneEnabled(i)"
+                                    (click)="eliminaFaseRealizzazione(i)"><i class="fas fa-trash-alt"></i>
+                                    {{ 'APP.DELETE_PHASE' | translate }}</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-left left-btns">
+                            <button type="button" class="btn btn-info ml-auto" *ngIf="!controlDisabled"
+                                (click)="aggiungiFaseRealizzazione()">{{ 'APP.ADD_PHASE' | translate }}</button>
+                        </div>
+                    </div>
+
+                    <!-- textareas realizzazione -->
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <textarea rows="3" class="form-control form-control-textarea"
+                                id="fonteDatiRealizzazioneInput" formControlName="fonteDatiRealizzazione"
+                                maxlength="500" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="fonteDatiRealizzazioneInput">{{
+                                'INT.INTERVENTION.FIELD.DATA_SOURCE_IMPLEMENTATION' | translate }}</label>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <textarea rows="3" class="form-control form-control-textarea" id="noteRealizzazioneInput"
+                                formControlName="noteRealizzazione" maxlength="4000" motiHasValueClass
+                                motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="noteRealizzazioneInput">{{
+                                'INT.INTERVENTION.FIELD.NOTE_IMPLEMENTATION' | translate }}</label>
+                        </div>
+                    </div>
+
+
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <div class="row-1">
+            &nbsp;
+        </div>
+
+        <ngb-accordion #accordionCriticita id="accordion-critical-issues" [activeIds]="activeIds"
+            class="accordion-moti">
+            <ngb-panel id="panelCriticita">
+                <ng-template ngbPanelHeader let-opened="opened">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="moti-accordion-title">{{ 'INT.INTERVENTION.SECTION.CRITICAL_ISSUES_COST_FINANCING'
+                            | translate }}</span>
+                        <button ngbPanelToggle class="btn btn-link p-0 moti-accordion-button">{{ (opened ? 'APP.HIDE' :
+                            'APP.SHOW') | translate }}
+                            &nbsp;
+                            <i class="fas fa-angle-up rotate-icon" *ngIf="opened"></i>
+                            <i class="fas fa-angle-down rotate-icon" *ngIf="!opened"></i>
+                        </button>
+                    </div>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+
+                    <!-- criticità -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.CRITICAL_ISSUES' | translate }}
+                        </div>
+                    </div>
+
+                    <div formArrayName="criticita">
+                        <!-- <div class="row" *ngFor="let order of fCriticita.controls; let i = index" [formGroupName]="i"> -->
+                        <ng-template ngFor let-task [ngForOf]="fCriticita.controls" let-i="index">
+                            <ng-container [formGroupName]="i">
+
+                                <div class="row">
+
+                                    <div class="form-group col-12 col-sm-6 col-md-5">
+                                        <ng-select appendTo="body" class="form-control"
+                                            [items]="elencoSituazioneCriticita" [virtualScroll]="true"
+                                            bindLabel="descrizione" formControlName="situazioneCriticita"
+                                            (focusout)="verificaCriticita(i)" (change)="verificaCriticita(i)"
+                                            motiIsInvalidClass>
+
+                                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                <span class="moti-ng-select-value ng-value-label">{{ item.descrizione
+                                                    }}</span>
+                                            </ng-template>
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <span>{{ item.descrizione }}</span>
+                                            </ng-template>
+
+                                        </ng-select>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label for="situazioneCriticitaIdInput" class="float-label">
+                                            {{ 'INT.INTERVENTION.FIELD.CRITICAL_SITUATION' | translate }}
+                                            <span class="text-required">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-5">
+                                        <ng-select appendTo="body" class="form-control" [items]="elencoTipoCriticita"
+                                            [virtualScroll]="true" bindLabel="descrizioneTipoCriticita"
+                                            formControlName="tipoCriticita" (focusout)="verificaCriticita(i)"
+                                            (change)="verificaCriticita(i)" motiIsInvalidClass>
+
+                                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                <span class="moti-ng-select-value ng-value-label">{{
+                                                    item.descrizioneTipoCriticita }}</span>
+                                            </ng-template>
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <span>{{ item.descrizioneTipoCriticita }}</span>
+                                            </ng-template>
+
+                                        </ng-select>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label for="tipoCriticitaIdInput" class="float-label">
+                                            {{ 'INT.INTERVENTION.FIELD.CRITICAL_TYPE' | translate }}
+                                            <span class="text-required">*</span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="form-group col-12 col-sm-6 col-md-10">
+                                        <textarea rows="3" class="form-control form-control-textarea"
+                                            id="descrizioneInput" formControlName="descrizione"
+                                            (focusout)="verificaCriticita(i)" (keypress)="verificaCriticita(i)"
+                                            maxlength="4000" motiHasValueClass motiIsInvalidClass></textarea>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label moti-label-textarea" for="descrizioneInput">
+                                            {{ 'INT.INTERVENTION.FIELD.CRITICAL_DESC' | translate }}
+                                            <span class="text-required">*</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group col-12 col-sm-6 col-md-2">
+                                        <button type="button" class="btn btn-outline-danger ml-auto"
+                                            *ngIf="!controlDisabled && btnEliminaCriticitaEnabled(i)"
+                                            (click)="eliminaCriticita(i)"><i class="fas fa-trash-alt"></i>
+                                            {{ 'APP.DELETE_CRITICAL_ISSUES' | translate }}</button>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-left left-btns">
+                            <button type="button" class="btn btn-info ml-auto" *ngIf="!controlDisabled"
+                                (click)="aggiungiCriticita()">{{ 'APP.ADD_CRITICAL_ISSUES' | translate }}</button>
+                        </div>
+                    </div>
+
+                    <!-- costi/importi -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.COSTS' | translate }}
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="costi">
+                        <div class="form-group col-12 col-sm-6 col-md-2">
+                            <input type="text" class="form-control" id="costoPrevistoInput"
+                                formControlName="costoPrevisto" motiHasValueClass motiIsInvalidClass currencyMask
+                                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}"
+                                [ngClass]="{'is-invalid': !fCosti.controls.costoPrevisto.valid}"
+                                (blur)="triggerUiUpdate()">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="costoPrevistoInput">{{ 'INT.INTERVENTION.FIELD.COST_PLANNED'
+                                | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-4">
+                            <input type="text" class="form-control" id="fonteRiferimentoInput"
+                                formControlName="fonteRiferimento" motiHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="fonteRiferimentoInput">{{
+                                'INT.INTERVENTION.FIELD.RFERENCE_SOURCE' | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-3">
+                            <input type="text" class="form-control" id="fonteDatiInput" formControlName="fonteDati"
+                                motiHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="fonteDatiInput">{{ 'INT.INTERVENTION.FIELD.DATA_SOURCE' |
+                                translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="dataUltimaLiquidazioneInput"
+                                    formControlName="dataUltimaLiquidazione" motiHasValueClass maxlength="10"
+                                    motiIsInvalidClass ngbDatepicker #d_dataUltimaLiquidazione="ngbDatepicker"
+                                    (dateSelect)="triggerUiUpdate()">
+                                <div class="input-group-append">
+                                    <i class="far fa-calendar-alt" (click)="d_dataUltimaLiquidazione.toggle()"></i>
+                                </div>
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                                <label class="float-label" for="dataUltimaLiquidazioneInput">{{
+                                    'INT.INTERVENTION.FIELD.LAST_SETTLEMENT_DATE' | translate }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" formGroupName="costi">
+                        <div class="form-group col-12 col-sm-12 col-md-12">
+                            <textarea rows="2" class="form-control form-control-textarea" id="noteEconomicheInput"
+                                formControlName="noteEconomiche" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="noteEconomicheInput">{{
+                                'INT.INTERVENTION.FIELD.ECONOMIC_NOTES' | translate }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-left left-btns">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <!-- finanziamenti -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.FINANCING' | translate }}
+                        </div>
+                    </div>
+
+
+                    <div formArrayName="finanziamenti">
+                        <!-- <div class="row" *ngFor="let finanziamento of fFinanziamenti.controls; let i = index" [formGroupName]="i"> -->
+                        <ng-template ngFor let-task [ngForOf]="fFinanziamenti.controls" let-i="index">
+                            <ng-container [formGroupName]="i">
+
+                                <div class="row">
+
+                                    <div class="form-group col-12 col-sm-6 col-md-3">
+                                        <ng-select appendTo="body" class="form-control" [items]="elencoFonteFinanziamento"
+                                            [virtualScroll]="true" bindLabel="descrizione" formControlName="fonteFinanziamento"
+                                            (focusout)="verificaFinanziamento(i)" (change)="verificaFinanziamento(i)"
+                                            motiIsInvalidClass>
+
+                                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                <span class="moti-ng-select-value ng-value-label">{{ item.descrizione }}</span>
+                                            </ng-template>
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <span>{{ item.descrizione }}</span>
+                                            </ng-template>
+
+                                        </ng-select>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label for="faseInput" class="float-label">
+                                            {{ 'INT.INTERVENTION.FIELD.FINANCING_SOURCE' | translate }}
+                                            <span class="text-required">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-3">
+                                        <input type="text" class="form-control" id="descrizioneInput"
+                                            formControlName="descrizione" maxlength="500" motiHasValueClass>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label" for="descrizioneInput">{{
+                                            'INT.INTERVENTION.FIELD.FINANCING_DESC' | translate }}</label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-2">
+                                        <input type="text" class="form-control" id="importoInput"
+                                            formControlName="importoStanziato" motiIsInvalidClass motiHasValueClass currencyMask
+                                            [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}"
+                                            [ngClass]="{'is-invalid': !fFinanziamenti.at(i).get('importoStanziato').valid}"
+                                            (blur)="triggerUiUpdate()">
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label" for="importoInput">{{
+                                            'INT.INTERVENTION.FIELD.ALLOCATED_AMOUNT' | translate }}</label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-2">
+                                        <input type="text" class="form-control" id="importoInput"
+                                            formControlName="importoLiquidato" motiIsInvalidClass motiHasValueClass currencyMask
+                                            [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}"
+                                            [ngClass]="{'is-invalid': !fFinanziamenti.at(i).get('importoLiquidato').valid}"
+                                            (blur)="triggerUiUpdate()">
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label" for="importoInput">{{
+                                            'INT.INTERVENTION.FIELD.FINANCING_AMOUNT' | translate }}</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="form-group col-12 col-sm-6 col-md-10">
+                                        <textarea rows="2" class="form-control form-control-textarea"
+                                            id="noteInput" formControlName="note"
+                                            maxlength="4000" motiHasValueClass motiIsInvalidClass></textarea>
+                                        <span class="form-highlight"></span>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label moti-label-textarea" for="noteInput">
+                                            {{ 'INT.INTERVENTION.FIELD.FINANCING_NOTE' | translate }}
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group col-12 col-sm-6 col-md-2">
+                                        <button type="button" class="btn btn-outline-danger ml-auto"
+                                            *ngIf="!controlDisabled && btnEliminaFinanziamentoEnabled(i)"
+                                            (click)="eliminaFinanziamento(i)"><i class="fas fa-trash-alt"></i>
+                                            {{ 'APP.DELETE_FINANCING' | translate }}</button>
+                                    </div>
+
+                                </div>
+                        
+                            </ng-container>
+                        </ng-template>
+                            
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-left left-btns">
+                            <button type="button" class="btn btn-info ml-auto" *ngIf="!controlDisabled"
+                                (click)="aggiungiFinanziamento()">{{ 'APP.ADD_FINANCING' | translate }}</button>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <div class="row-1">
+            &nbsp;
+        </div>
+
+        <ngb-accordion #accordionDatiOti id="accordion-dati-oti" [activeIds]="activeIds" class="accordion-moti"
+            *ngIf="initialIntervento.interventoDatiOtis && initialIntervento.interventoDatiOtis.length > 0">
+            <ngb-panel id="panelDatiOti">
+                <ng-template ngbPanelHeader let-opened="opened">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="moti-accordion-title">{{ 'INT.INTERVENTION.SECTION.DATA_OTI' | translate }}</span>
+                        <button ngbPanelToggle class="btn btn-link p-0 moti-accordion-button">{{ (opened ? 'APP.HIDE' :
+                            'APP.SHOW') | translate }}
+                            &nbsp;
+                            <i class="fas fa-angle-up rotate-icon" *ngIf="opened"></i>
+                            <i class="fas fa-angle-down rotate-icon" *ngIf="!opened"></i>
+                        </button>
+                    </div>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-3 col-md-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="dataUltimoAggiornamentoInput"
+                                    formControlName="dataUltimoAggiornamento" motiHasValueClass maxlength="10"
+                                    motiIsInvalidClass ngbDatepicker #d_dataUltimoAggiornamento="ngbDatepicker"
+                                    (dateSelect)="triggerUiUpdate()">
+                                <div class="input-group-append">
+                                    <i class="far fa-calendar-alt" (click)="d_dataUltimoAggiornamento.toggle()"></i>
+                                </div>
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                                <label class="float-label" for="dataUltimoAggiornamentoInput">{{
+                                    'INT.INTERVENTION.FIELD.OTI_DATE_LAST_UPDATE' | translate }}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-12 col-sm-9 col-md-9">
+                            <textarea rows="3" class="form-control form-control-textarea" id="soggettiCoinvoltiInput"
+                                formControlName="soggettiCoinvolti" maxlength="500" motiHasValueClass
+                                motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="soggettiCoinvoltiInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_SUBJECTS_INVOLVED' | translate }}</label>
+                        </div>
+                    </div>
+
+                    <!-- cronoprogramma -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.OTI_PROJECT_DETAIL' | translate }}
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-12 col-md-12">
+                            <textarea rows="3" class="form-control form-control-textarea"
+                                id="descrizioneProgettazioneInput" formControlName="descrizioneProgettazione"
+                                maxlength="500" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="descrizioneProgettazioneInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_DESC_DESIGN' | translate }}</label>
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <textarea rows="3" class="form-control form-control-textarea" id="dettagliProssimaFaseInput"
+                                formControlName="dettagliProssimaFase" maxlength="500" motiHasValueClass
+                                motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="dettagliProssimaFaseInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_DESC_NEXT_PHASE' | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <textarea rows="3" class="form-control form-control-textarea" id="dettaglioCostiInput"
+                                formControlName="dettaglioCosti" maxlength="500" motiHasValueClass
+                                motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="dettaglioCostiInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_DESC_COSTS' | translate }}</label>
+                        </div>
+                    </div>
+
+                    <!-- cronoprogramma -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.OTI_TIME_SCHEDULE' | translate }}
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-6 col-md-3">
+                            <input type="text" class="form-control" id="annoInizioLavoriInput"
+                                formControlName="annoInizioLavori" maxlength="10" motiHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="annoInizioLavoriInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_YEAR_START_WORKS' | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-3">
+                            <input type="text" class="form-control" id="annoProssimaFaseInput"
+                                formControlName="annoProssimaFase" maxlength="10" motiHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="annoProssimaFaseInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_YEAR_NEXT_PHASE' | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-3">
+                            <input type="text" class="form-control" id="annoUltimazioneOperaInput"
+                                formControlName="annoUltimazioneOpera" maxlength="10" motiHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="annoUltimazioneOperaInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_YEAR_OPERA_COMPLETION' | translate }}</label>
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-12 col-md-12">
+                            <textarea rows="3" class="form-control form-control-textarea" id="rispettoTempiInput"
+                                formControlName="rispettoTempi" maxlength="500" motiHasValueClass
+                                motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="rispettoTempiInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_RESPECT_OF_THE_TIMES' | translate }}</label>
+                        </div>
+                    </div>
+
+                    <!-- oti finanziamenti -->
+                    <div class="row moti-row-subsection">
+                        <div class="col-12 col-sm-12 col-md-12 moti-subsection">
+                            {{ 'INT.INTERVENTION.SECTION.OTI_FINANCING' | translate }}
+                        </div>
+                    </div>
+
+                    <div class="row" formGroupName="datiOti">
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <textarea rows="3" class="form-control form-control-textarea"
+                                id="finanziamentiDisponibiliInput" formControlName="finanziamentiDisponibili"
+                                maxlength="500" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="finanziamentiDisponibiliInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_FINANCING_AVAILABLE' | translate }}</label>
+                        </div>
+                        <div class="form-group col-12 col-sm-6 col-md-6">
+                            <textarea rows="3" class="form-control form-control-textarea"
+                                id="finanziamentiNonDisponibiliInput" formControlName="finanziamentiNonDisponibili"
+                                maxlength="500" motiHasValueClass motiIsInvalidClass></textarea>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label moti-label-textarea" for="finanziamentiNonDisponibiliInput">{{
+                                'INT.INTERVENTION.FIELD.OTI_FINANCING_NOT_AVAILABLE' | translate }}</label>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <div class="row float-right moti-form-buttons">
+
+            <div *ngIf="!formIntervento.valid || !isMultiselectValid()" style="margin-top: 5px;">
+                <span class="text-required">{{ 'APP.FIELD_REQUIRED' | translate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <button type="button" class="btn btn-primary ml-auto" (click)="onClickSalva()" *ngIf="!initialIntervento.id"
+                [disabled]="saveBtnDisabled || !formIntervento.valid || !isMultiselectValid()">{{
+                'APP.INSERT_INTERVENTION' | translate }}</button>
+
+            <button type="button" class="btn btn-outline-success ml-auto"
+                *ngIf="initialIntervento?.id && !controlDisabled"
+                [disabled]="controlDisabled || !formIntervento.valid || !isMultiselectValid()"
+                (click)="onClickSalva()">{{ 'APP.SAVE_CHANGES' | translate }}</button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-info ml-auto" *ngIf="initialIntervento?.id"
+                [disabled]="!controlDisabled" (click)="onClickModifica()">{{ 'APP.MODIFY' | translate }}</button>
+        </div>
+
+    </form>
+
+</div>
+
+<ng-template #modalInsert let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-P-0001' | translate }}
+            <br><br>
+            <img src="assets/img/ok.png" style="background: transparent 0% 0% no-repeat padding-box;" alt="OK">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalUpdate let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-P-0002' | translate }}
+            <br><br>
+            <img src="assets/img/ok.png" style="background: transparent 0% 0% no-repeat padding-box;" alt="OK">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalDelete let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-P-0003' | translate }}
+            <br><br>
+            <img src="assets/img/ok.png" style="background: transparent 0% 0% no-repeat padding-box;" alt="OK">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalConfirmElimina let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-A-0004' | translate }}
+
+            <br><br><br>
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="modal.dismiss()">{{
+                'APP.CANCEL' | translate }}</button>
+            <div>
+                &nbsp;
+            </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block" (click)="onModalEliminaClose(modal)">{{
+                'APP.DELETE' | translate }}</button>
+        </div>
+
+    </div>
+</ng-template>
+
+
+<ng-template #modalBack let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-A-0006' | translate }}
+            <br>
+            {{ 'MESSAGES.INT-INT-A-0006-02' | translate }}
+
+            <br><br><br>
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="onModalBackClose(modal)">{{
+                'APP.EXIT_WITHOUT_SAVING' | translate }}</button>
+            <div>
+                &nbsp;
+            </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block" (click)="onModalBackSave(modal)">{{
+                'APP.SAVE' | translate }}</button>
+        </div>
+
+    </div>
+</ng-template>
+
+
+<ng-template #modalRicercaAttuatore let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-approva-title">{{ 'INT.ATTUATORE.FIND.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- <ngb-alert [type]="'info'" [dismissible]="false">{{ 'INT.ATTUATORE.FIND.TEXT' | translate}}</ngb-alert> -->
+
+        <form [formGroup]="formModalRicercaAttuatore">
+            <div class="row">
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <input type="text" class="form-control moti-input-bold" id="descrizioneInput"
+                        formControlName="descrizione" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="descrizioneInput">{{ 'INT.ATTUATORE.FIELD.DESCRIPTION' | translate
+                        }}
+                        <!-- <span class="text-required">*</span> -->
+                    </label>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <input type="text" class="form-control moti-input-bold" id="codiceFiscaleInput"
+                        formControlName="codiceFiscale" maxlength="16" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="descrizioneInput">{{ 'INT.ATTUATORE.FIELD.FISCAL_CODE' | translate
+                        }}
+                        <!-- <span class="text-required">*</span> -->
+                    </label>
+                </div>
+
+                <div class="form-group col-12 col-sm-12 col-md-4" > <!-- style="text-align: right;" -->
+                    <button type="button" class="btn btn-outline-primary" (click)="resetFormRicercaAttuatore()">
+                        {{ 'APP.CANCEL' | translate }}
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-primary" (click)="modalAttuatoriRicerca(modal)">
+                        {{ 'APP.FIND' | translate }}
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+        <table class="table table-hover table-sm table-responsive table-sortable moti-table"
+            *ngIf="modalElencoAttuatori && modalElencoAttuatori.length > 0">
+            <thead>
+                <tr>
+                    <th style="background-color: rgb(240, 240, 240) !important; cursor: default; width: 60%;">{{ 'INT.ATTUATORE.FIELD.DESCRIPTION' | translate }}</th>
+                    <th style="background-color: rgb(240, 240, 240) !important; cursor: default; width: 30%;">{{ 'INT.ATTUATORE.FIELD.FISCAL_CODE' | translate }}</th>
+                    <th style="background-color: rgb(240, 240, 240) !important; cursor: default; width: 10%;">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let modalAttuatore of modalElencoAttuatori;">
+                    <td class="border-0" style="line-height: 30px; height: 30px; vertical-align: middle;">{{ modalAttuatore.descrizione }}</td>
+                    <td class="border-0" style="line-height: 30px; height: 30px; vertical-align: middle;">{{ modalAttuatore.codiceFiscale }}</td>
+                    <td class="border-0" style="line-height: 30px; height: 30px; vertical-align: middle;">
+                        <button type="button" class="btn btn-outline-dark"
+                            (click)="modalAttuatoriClose(modal, modalAttuatore.id)">
+                            {{ 'INT.ATTUATORE.FIND.SELECT' | translate }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss()">{{ 'APP.CLOSE' | translate
+            }}</button>
+    </div>
+</ng-template>
+
+
+<ng-template #modalAttuatoreNonTrovato let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ 'MESSAGES.INT-INT-A-0007' | translate }}
+            <br><br><br>
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="modal.dismiss()">{{
+                'APP.CANCEL' | translate }}</button>
+            <div>
+                &nbsp;
+            </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block"
+                (click)="onModalAttuatoreNonTrovato(modal)">{{
+                'APP.CONFIRM' | translate }}</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #modalInserisciAttuatore let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-approva-title">{{ 'INT.ATTUATORE.INSERT.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- <ngb-alert [type]="'info'" [dismissible]="false">{{ 'INT.ATTUATORE.INSERT.TEXT' | translate}}</ngb-alert> -->
+
+        <form [formGroup]="formModalInserisciAttuatore">
+            <div class="row">
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <input type="text" class="form-control moti-input-bold" id="descrizioneInput"
+                        formControlName="descrizione" maxlength="256" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="descrizioneInput">{{ 'INT.ATTUATORE.FIELD.DESCRIPTION' | translate
+                        }}
+                        <span class="text-required">*</span>
+                    </label>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <input type="text" class="form-control moti-input-bold" id="codiceFiscaleInput"
+                        formControlName="codiceFiscale" maxlength="16" motiHasValueClass motiIsInvalidClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="descrizioneInput">{{ 'INT.ATTUATORE.FIELD.FISCAL_CODE' | translate
+                        }}
+                        <span class="text-required">*</span>
+                    </label>
+                </div>
+
+                <div class="form-group col-12 col-sm-12 col-md-4">
+                    <button type="button" class="btn btn-outline-primary" (click)="resetFormModalInserisciAttuatore()">
+                        {{ 'APP.CANCEL' | translate }}
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-primary" (click)="modalAttuatoriInsert(modal, true)"
+                        [disabled]="!formModalInserisciAttuatore.valid">
+                        {{ 'INT.ATTUATORE.INSERT.CONFIRM' | translate }}
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss()">{{ 'APP.CLOSE' | translate
+            }}</button>
+    </div>
+</ng-template>
+
+
+<ng-template #modalConfirmInserisci let-modal>
+    <div class="modal-body">
+        <div class="moti-modal">
+            {{ messageConfirmInsert }}
+            <br><br><br>
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="modal.dismiss()">{{
+                'APP.CANCEL' | translate }}</button>
+            <div>
+                &nbsp;
+            </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block" (click)="onModalConfirmInserisci(modal)">{{
+                'APP.CONFIRM' | translate }}</button>
+        </div>
+    </div>
+</ng-template>

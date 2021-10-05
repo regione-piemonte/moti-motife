@@ -1,0 +1,194 @@
+{
+  "APP": {
+    "HIDE": "Nascondi",
+    "SHOW": "Mostra",
+    "FILTER_CLEAN": "Pulisci filtri",
+    "APPLY": "Applica",
+    "ADD_CRITICAL_ISSUES": "+ Aggiungi criticità",
+    "ADD_FINANCING": "+ Aggiungi finanziamento",
+    "ADD_PHASE": "+ Aggiungi fase",
+    "AUTHORITY": null,
+    "BACK": "Indietro",
+    "CANCEL": "Annulla",
+    "CONFIRM": "Conferma",
+    "FIND": "Cerca",
+    "CLOSE": "Chiudi",
+    "DELETE": "Elimina",
+    "DELETE_CRITICAL_ISSUES": "Elimina criticità",
+    "DELETE_FINANCING": "Elimina finanziamento",
+    "DELETE_PHASE": "Elimina fase",
+    "EXIT": "Esci",
+    "EXIT_WITHOUT_SAVING": "Esci senza salvare",
+    "EXPORT": "Esporta",
+    "INSERT_INTERVENTION": "Inserisci intervento",
+    "FIELD_REQUIRED": "I campi contrassegnati con * sono obbligatori",
+    "INSERT_INTERVENTION_DETAILS": "Inserisci un intervento all'interno della lista",
+    "LIST_INTERVENTIONS": "Lista interventi",
+    "LIST_INTERVENTIONS_DETAILS": "Visualizza tutta la lista di interventi",
+    "LOADING": "Caricamento...",
+    "MODIFY": "Modifica",
+    "NO_DATA_FOUND": "Non ci sono dati",
+    "SAVE_CHANGES": "Salva modifiche",
+    "SAVE": "Salva",
+    "SEARCH": "Cerca",
+    "SEARCH_INTERVENTION": "Cerca intervento",
+    "SEARCH_INTERVENTION_BUTTON": "Cerca",
+    "SEARCH_INTERVENTION_DETAILS": "Inserisci il codice per cercare un intervento",
+    "SEARCH_FAST_INTERVENTION": "Ricerca rapida",
+    "SEARCH_FAST_INTERVENTION_DETAILS": "Cerca un intervento per titolo o codice",
+    "TITLE": "Monitoraggio Territoriale Interventi in Piemonte"
+  },
+  "ERROR": {
+    "ERROR_TITLE": "Errore",
+    "FIELD": {
+      "FISCAL_CODE": {
+        "INVALID": "Codice fiscale non valido",
+        "INVALID_CHAR": "Codice fiscale non valido: deve essere un alfanumerico",
+        "INVALID_LENGTH": "Codice fiscale non valido: deve essere un alfanumerico di 16 caratteri"
+      },
+      "LENGTH_INVALID": "Il campo deve essere composto di {{leng}} caratteri alfanumerici",
+      "REQUIRED": "Dato obbligatorio"
+    },
+    "POPUP_BLOCKED": "Si prega di disabilitare il blocco dei Pop-up e di riprovare."
+  },
+  "FOOTER": {
+    "ACCESSIBILITY": "Accessibilità",
+    "CALL_CENTER": "PER INFORMAZIONI",
+    "COOKIE_POLICY": "Cookie policy",
+    "GO_UP": "Torna su",
+    "PRIVACY": "Note legali e privacy",
+    "SUPPORT": "PER MALFUNZIONAMENTO"
+  },
+  "HEADER": {
+    "MENU": "menu",
+    "ROLE": "Ruolo",
+    "SETTORE": {
+      "DEFAULT_DESCRIPTION": "Selezionare un settore"
+    }
+  },
+  "INT": {
+    "INTERVENTION": {
+      "FIELD": {
+        "ACTUATOR": "Attuatore",
+        "CIG": "CIG",
+        "CODE": "Codice",
+        "COST_PLANNED": "Costo previsto",
+        "COST_PLANNED_SHORT": "Costo",
+        "CRITICAL_DESC": "Descrizione",
+        "CRITICAL_SITUATION": "Situazione criticità",
+        "CRITICAL_TYPE": "Tipo criticità",
+        "CRITICAL_SHORT": "Criticità",
+        "CUP": "CUP",
+        "DATA_SOURCE": "Fonte dati",
+        "DATA_SOURCE_SHORT": "Fonte",
+        "DATA_SOURCE_IMPLEMENTATION": "Fonte dati",
+        "DATA_SOURCE_PROGRAMMING": "Fonte dati",
+        "DATE_END_EFFECTIVE": "Data effettiva",
+        "DATE_END_EXPECTED": "Data prevista",
+        "ECONOMIC_NOTES": "Note economiche",
+        "ALLOCATED_AMOUNT": "Importo stanziato",
+        "FINANCING_AMOUNT": "Importo liquidato",
+        "FINANCING_DESC": "Descrizione",
+        "FINANCING_SOURCE": "Fonte finanziamento",
+        "FINANCING_NOTE": "Note",
+        "LAST_SETTLEMENT_DATE": "Data ultima liquidazione",
+        "NOTE_IMPLEMENTATION": "Note",
+        "NOTE_PROGRAMMING": "Note",
+        "OTI_DATE_LAST_UPDATE": "Data ultimo aggiornamento",
+        "OTI_DESC_COSTS": "Dettaglio costi",
+        "OTI_DESC_DESIGN": "Dettaglio progettazione",
+        "OTI_DESC_NEXT_PHASE": "Dettaglio prossima fase",
+        "OTI_FINANCING_AVAILABLE": "Disponibili",
+        "OTI_FINANCING_NOT_AVAILABLE": "Non disponibili",
+        "OTI_RESPECT_OF_THE_TIMES": "Rispetto dei tempi",
+        "OTI_SUBJECTS_INVOLVED": "Soggetti coinvolti",
+        "OTI_YEAR_NEXT_PHASE": "Anno prossima fase",
+        "OTI_YEAR_OPERA_COMPLETION": "Anno ultimazione opera",
+        "OTI_YEAR_START_WORKS": "Anno inizio lavori",
+        "PHASE": "Fase",
+        "PLACE": "Luogo",
+        "REFERENT": "Referente",
+        "RFERENCE_SOURCE": "Fonte di riferimento",
+        "SECTOR": "Settore",
+        "SOURCE": "Fonte",
+        "STATE_IMPLEMENTATION": "Stato",
+        "TECNICAL_DESCR": "Descrizione tecnica",
+        "TITLE": "Titolo",
+        "TYPOLOGY": "Tipologia"
+      },
+      "SECTION": {
+        "COSTS": "Costi / Importi",
+        "CRITICAL_ISSUES": "Criticità",
+        "CRITICAL_ISSUES_COST_FINANCING": "Criticità / Costi / Finanziamenti",
+        "DATA_OTI": "Dati OTI",
+        "FINANCING": "Finanziamenti",
+        "GENERAL_DATA": "Dati generali",
+        "IMPLEMENTATION": "Realizzazione",
+        "IMPLEMENTATION_DESC": "",
+        "OTI_FINANCING": "Finanziamenti",
+        "OTI_PROJECT_DETAIL": "Dettagli progetto",
+        "OTI_TIME_SCHEDULE": "Cronoprogramma",
+        "PROGRAMMING": "Progettazione  / Programmazione",
+        "PROGRAMMING_DESC": "",
+        "SEARCH": "Filtri",
+        "FILTER_APPLIED": "filtro applicato",
+        "FILTERS_APPLIED": "filtri applicati",
+        "STATE_OF_IMPLEMENTATION": "Stato di attuazione"
+      }
+    },
+    "ATTUATORE": {
+      "FIELD": {
+        "DESCRIPTION": "Descrizione",
+        "FISCAL_CODE": "Codice fiscale"
+      },
+      "FIND": {
+        "TITLE": "Ricerca attuatore",
+        "TEXT": "",
+        "SELECT": "Seleziona"
+      },
+      "INSERT": {
+        "TITLE": "Inserisci attuatore",
+        "CONFIRM": "Inserisci"
+      }
+    }
+  },
+  "LANGUAGE": {
+    "ENGLISH": "ENG",
+    "ITALIAN": "ITA"
+  },
+  "MESSAGES": {
+    "INT-INT-A-0004": null,
+    "INT-INT-P-0001": null,
+    "INT-INT-P-0002": null,
+    "INT-INT-P-0003": null,
+    "SYS-SYS-E-0007": null
+  },
+  "ORD": {
+    "DETAIL": {
+      "TAB_NAME": null
+    }
+  },
+  "PAGINATION": {
+    "FIRST": "Inizio",
+    "INFO_FOOTER_DESC": "Righe per pagina",
+    "INFO_FOOTER": "{{first}} - {{last}} di {{total}}",
+    "INFO_HEADER": "{{total}}",
+    "INFO_HEADER_DESC": "interventi",
+    "LAST": "Fine",
+    "NEXT": "Succ.",
+    "PREV": "Prec."
+  },
+  "SIDEBAR": {
+    "HOME": "Home",
+    "INT": {
+      "INTERVENTION": {
+        "CONSULT": "Consulta intervento",
+        "INSERT": "Inserisci intervento",
+        "UPDATE": "Modifica intervento",
+        "SEARCH": "Lista interventi",
+        "TITLE": "Intervento"
+      },
+      "TITLE": "Interventi"
+    }
+  }
+}

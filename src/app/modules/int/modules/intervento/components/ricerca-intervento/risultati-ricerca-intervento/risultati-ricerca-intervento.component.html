@@ -1,0 +1,104 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="mt-0 scrollbar-table scrollbar-primary">
+
+    <div class="moti-pagination-nav">
+        <nav aria-label="Navigazione">
+            <div class="col-12 row moti-header-pagination m-0">
+                <div class="col-3 col-sm-6 col-xl-6">
+                    <!-- 
+                        <ng-select class="form-control" [items]="pageSizes" [virtualScroll]="true" [ngModel]="limit"
+                        (change)="changePageSize($event)" motiIsInvalidClass [clearable]="false"></ng-select>
+                     -->
+                    <span class="font-weight-bold">{{ paginationHeader }}</span>
+                    {{ 'PAGINATION.INFO_HEADER_DESC' | translate }}
+                </div>
+
+                <div class="col-9 col-sm-6 col-xl-6 m-0 p-0">
+                    <!-- 
+                        <ngb-pagination class="d-flex justify-content-end" [collectionSize]="pagedResponse.totalElements" [(page)]="page"
+                            [pageSize]="limit" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                            (pageChange)="goToPage($event)">
+                            <ng-template ngbPaginationFirst>{{ 'PAGINATION.FIRST' | translate }}</ng-template>
+                            <ng-template ngbPaginationLast>{{ 'PAGINATION.LAST' | translate }}</ng-template>
+                            <ng-template ngbPaginationPrevious>{{ 'PAGINATION.PREV' | translate }}</ng-template>
+                            <ng-template ngbPaginationNext>{{ 'PAGINATION.NEXT' | translate }}</ng-template>
+                        </ngb-pagination>
+                     -->
+                    <button type="button" class="btn btn-outline-primary float-right"
+                        (click)="onClickEsporta()">{{ 'APP.EXPORT' | translate }}</button>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <moti-paginated-table [pagedResponse]="pagedResponse" (changePaginationData)="onChangePaginationData($event)"
+        #pagedTable [columnNumber]="10" [limit]="currentPaginationData.limit">
+        <ng-template motiPaginationHead>
+            <tr class="">
+                <!-- <th scope="col">&nbsp;</th> -->
+
+                <th style="cursor: default;" motiSortable="fonteDati" (sort)="pagedTable.onSort($event)">
+                    {{ 'INT.INTERVENTION.FIELD.DATA_SOURCE_SHORT' | translate }}</th>
+                <th style="cursor: default;" motiSortable="codIntervento" (sort)="pagedTable.onSort($event)">
+                    {{ 'INT.INTERVENTION.FIELD.CODE' | translate }}</th>
+                <th style="cursor: default;" motiSortable="titolo" (sort)="pagedTable.onSort($event)">
+                    {{ 'INT.INTERVENTION.FIELD.TITLE' | translate }}</th>
+
+                <th style="cursor: default;" motiSortable="statoAttuaz" (sort)="pagedTable.onSort($event)">
+                    {{'INT.INTERVENTION.FIELD.STATE_IMPLEMENTATION' | translate}}</th>
+
+                <th style="cursor: default;" motiSortable="tipologia" (sort)="pagedTable.onSort($event)">
+                    {{ 'INT.INTERVENTION.FIELD.TYPOLOGY' | translate}}</th>
+
+                <th> {{ 'INT.INTERVENTION.FIELD.COST_PLANNED_SHORT' | translate }}</th>
+
+                <th> {{ 'INT.INTERVENTION.FIELD.PLACE' | translate }}</th>
+
+                <th> {{'INT.INTERVENTION.FIELD.REFERENT' | translate}}</th>
+                <th> {{'INT.INTERVENTION.FIELD.CRITICAL_SHORT' | translate}}</th>
+            </tr>
+        </ng-template>
+
+        <ng-template motiPaginationBody let-el>
+            <tr style="cursor: pointer;" class="clickable" (click)="consultaIntervento(el.id)">
+                <!-- <td>
+                    <input type="checkbox" name="intervento" (click)="onInterventoSelect(el)"
+                        [checked]="selectedIntervento?.id === el.id">
+                </td> -->
+                <td>{{ el.fonteDati.descrizione }}</td>
+                <td><span style="font-weight: bold;">{{ el.codIntervento }}</span></td>
+                <td>{{ el.titolo }}</td>
+                <td>{{ el.statoAttuaz.descrizione }}</td>
+                <td>{{ el.tipologia.descrizione }}</td>
+                <td style="text-align: right;">
+                    {{ el.interventoCostis[0]?.costoPrevisto | currency:'EUR':'symbol':'1.2-2':'it' }}
+                </td>
+                <td>
+                    {{  el.interventoLuogos[0]? '' + el.interventoLuogos[0]?.luogo.denomLuogo + ' (' + el.interventoLuogos[0]?.luogo.sigla + ')':'' }}
+                    {{  el.interventoLuogos[1]? ', ' + el.interventoLuogos[1]?.luogo.denomLuogo + ' (' + el.interventoLuogos[1]?.luogo.sigla + ')':'' }}
+                    {{  el.interventoLuogos[2]? ', ' + el.interventoLuogos[2]?.luogo.denomLuogo + ' (' + el.interventoLuogos[2]?.luogo.sigla + ')':'' }}
+                    {{  el.interventoLuogos[3]? ', ' + el.interventoLuogos[3]?.luogo.denomLuogo + ' (' + el.interventoLuogos[3]?.luogo.sigla + ')':'' }}
+                    {{  el.interventoLuogos[4]? ', ' + el.interventoLuogos[4]?.luogo.denomLuogo + ' (' + el.interventoLuogos[4]?.luogo.sigla + ')':'' }}
+                </td>
+                <td>
+                    {{  el.interventoReferentes[0]?.utente.cognome }}
+                    {{  el.interventoReferentes[1] ? ', ' + el.interventoReferentes[1]?.utente.cognome:'' }}
+                    {{  el.interventoReferentes[2] ? ', ' + el.interventoReferentes[2]?.utente.cognome:'' }}
+                    {{  el.interventoReferentes[3] ? ', ' + el.interventoReferentes[3]?.utente.cognome:'' }}
+                    {{  el.interventoReferentes[4] ? ', ' + el.interventoReferentes[4]?.utente.cognome:'' }}
+                </td>
+                <td class="text-center">
+                    <!--  -->
+                    <span style="font-size: 15px; color: #DB3214;" *ngIf="el.interventoSituazioneCriticitas[0]">
+                        <i class="fas fa-circle"></i>
+                    </span>
+                </td>
+            </tr>
+        </ng-template>
+
+    </moti-paginated-table>
+</div>

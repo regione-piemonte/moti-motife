@@ -1,0 +1,90 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<header class="fixed-top" [class.header-hidden]="headerHidden">
+
+  <nav class="navbar navbar-expand navbar-dark-blue">
+    <div class="container-fluid">
+
+      <div class="row page-body">
+        <div class="col">
+          <div class="row">
+            <div class="col-sm-1 col-md-1">
+              &nbsp;
+            </div>
+            <div class="col-sm-10 col-md-10">
+              <div class="container-fluid">
+                <img src="assets/img/Logo.png">
+
+                <span class="float-right">
+                  <span ngbDropdown class="menu-utente">
+                    <a ngbDropdownToggle class="btn btn-link dropdown-toggle">
+                      <span class="utente">{{ utente?.nome?.charAt(0) }}{{ utente?.cognome?.charAt(0) }}</span>
+                    </a>
+
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                      <button type="button" class="dropdown-item" ngbDropdownItem disabled>{{ utente?.nome }}
+                        {{ utente?.cognome }}</button>
+                      <div class="dropdown-divider"></div>
+                      <button type="button" class="dropdown-item" ngbDropdownItem
+                        disabled>{{ 'HEADER.ROLE' | translate }}:
+                      </button>
+                      <ng-container>
+                        <button type="button" class="dropdown-item" ngbDropdownItem disabled>
+                          {{ utente?.ruolo.descrizioneRuolo }}
+                        </button>
+                      </ng-container>
+                      <div class="dropdown-divider"></div>
+                      <button type="button" class="dropdown-item" ngbDropdownItem
+                        (click)="logout()">{{ 'APP.EXIT' | translate }}</button>
+                    </div>
+                  </span>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand navbar-dark">
+    <div class="container-fluid">
+
+      <div class="row page-body">
+        <div class="col">
+          <div class="row">
+            <div class="col-sm-1 col-md-1">
+              &nbsp;
+            </div>
+            <div class="col-sm-10 col-md-10">
+              <div class="container-fluid my-2">
+                <font style="padding: 0px;font-weight: bold; font-size: 18px;">{{ titolo | translate }}</font>
+
+                <!-- <span class="float-right">
+                  <div>
+                    <ng-container *ngFor="let language of languages; last as last">
+                      <button type="button" class="btn btn-link" [class.selected]="language.langCode === lang.langCode"
+                        [disabled]="language.langCode === lang.langCode" (click)="onLanguageSelected(language)">
+                        {{ language.text | translate }}
+                      </button>
+                      <! -- Forse bigogna dare un padding right a questo span, o un left al button... E invertire i CSS di selezione -- >
+                      <span *ngIf="!last">|</span>
+                    </ng-container>
+                  </div>
+                </span> -->
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+</header>

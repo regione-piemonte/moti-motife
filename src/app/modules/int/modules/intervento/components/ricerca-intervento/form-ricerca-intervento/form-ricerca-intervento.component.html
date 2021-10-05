@@ -1,0 +1,106 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formRicercaIntervento">
+
+    <div class="row">
+        <div class="form-group col-12 col-sm-6 col-md-3">
+            <ng-select class="form-control moti-input-bold" [items]="elencoFonteDati" [virtualScroll]="true"
+                bindLabel="descrizione" formControlName="fonteDati" motiIsInvalidClass></ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="prioritaInput"
+                class="float-label">{{ 'INT.INTERVENTION.FIELD.SOURCE' | translate }}</label>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-3">
+            <input type="text" class="form-control moti-input-bold" id="codInterventoInput"
+                formControlName="codIntervento" maxlength="10" motiHasValueClass motiIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codInterventoInput">{{ 'INT.INTERVENTION.FIELD.CODE' | translate }}
+            </label>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-3">
+            <input type="text" class="form-control moti-input-bold" id="titoloInput" formControlName="titolo"
+                maxlength="200" motiHasValueClass motiIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="titoloInput">{{ 'INT.INTERVENTION.FIELD.TITLE' | translate }}</label>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-3">
+            <ng-select class="form-control" [items]="elencoTipologia" [virtualScroll]="true" bindLabel="descrizione"
+                formControlName="tipologia" motiIsInvalidClass></ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="tipologiaInput" class="float-label">{{ 'INT.INTERVENTION.FIELD.TYPOLOGY' | translate }}</label>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="form-group col-12 col-sm-6 col-md-6">
+            <ng-select [dropdownPosition]="'top'" appendTo="body" [items]="elencoLuogo" [multiple]="true" [closeOnSelect]="false"
+                [searchable]="true" bindLabel="denomLuogo" class="form-control-multiselect" [(ngModel)]="selectedLuogos"
+                [ngModelOptions]="{standalone: true}" #refElLuogo>
+
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="moti-ng-value ng-value-label">{{ item.denomLuogo }}</span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">
+                        <font style="color: black">×</font>
+                    </span>
+                </ng-template>
+
+                <ng-template ng-option-tmp let-item="item">
+                    <span>{{ item.denomLuogo }}</span>
+                </ng-template>
+
+            </ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="luogoInput" class="float-label">{{ 'INT.INTERVENTION.FIELD.PLACE' | translate }}
+            </label>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-6">
+            <ng-select [dropdownPosition]="'top'" appendTo="body" [items]="elencoReferente" [multiple]="true" [closeOnSelect]="false"
+                [searchable]="true" bindLabel="cognome" class="form-control-multiselect "
+                [(ngModel)]="selectedReferentes" [ngModelOptions]="{standalone: true}" #refElReferente>
+
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="moti-ng-value ng-value-label">{{ item.cognome + ' ' + item.nome }}</span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">
+                        <font style="color: black">×</font>
+                    </span>
+                </ng-template>
+
+                <ng-template ng-option-tmp let-item="item">
+                    <span>{{ item.cognome + ' ' + item.nome }}</span>
+                </ng-template>
+
+            </ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="referenteInput" class="float-label">{{ 'INT.INTERVENTION.FIELD.REFERENT' | translate }}</label>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="form-group col-12 col-sm-12 col-md-12">
+
+            <button type="button" class="btn btn-outline-primary ml-auto"
+                (click)="onClickPulisci()">{{ 'APP.FILTER_CLEAN' | translate }}</button>
+
+            <ul class="nav float-right">
+                <li>
+                    <button type="button" class="btn btn-primary ml-auto" [disabled]="btnApplicaDisabled()"
+                        (click)="onClickApplica()">{{ 'APP.APPLY' | translate }}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</form>

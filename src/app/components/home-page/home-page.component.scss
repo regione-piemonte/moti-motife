@@ -1,0 +1,117 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.box-home {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #EAEAEA;
+    border-radius: 5px;
+    opacity: 1;
+    height: 395px;
+}
+
+.box-lista-interventi {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #EAEAEA;
+  border-radius: 5px;
+  opacity: 1;
+  height: 190px;
+
+  margin-bottom: 15px;
+  margin-left: 0px;
+  margin-right: 1px;
+
+  @media(max-width: 768px) {
+    margin-left: 15px;
+    /* background: red 0% 0% no-repeat padding-box; */
+  }
+}
+
+.ricerca-text-1 {
+    top: 20%;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000DE;
+    opacity: 1;
+  }
+  
+.ricerca-text-1b {
+    top: 20%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000DE;
+    opacity: 1;
+  }
+
+.ricerca-text-2 {
+    font-size: 14px;
+    font-weight: normal;
+    color: #000000DE;
+    opacity: 1;
+}
+
+.moti-cerca-img {
+    display: block;
+    max-width:150px;
+    max-height:150px;
+    width: auto;
+    height: auto;
+
+    @media(max-width: 1224px) {
+      max-width:120px;
+      max-height:120px;
+    }
+
+    @media(max-width: 1024px) {
+      max-width:100px;
+      max-height:100px;
+    }
+  }
+
+.logo-cerca-intervento {
+    position: relative;
+    width: 20%;
+    left: 60%;
+    opacity: 1;
+ }
+
+.moti-icon {
+  position: relative;
+  margin-top: 35px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+
+
+.moti-tab-panel {
+  background-color:#f2f8fe !important;
+}
+
+.moti-tab-title {
+  border-color: transparent;
+  border-bottom: 3px solid #0072e5;
+}
+
+.moti-tab {
+  text-transform: uppercase;
+  color: #0072e5;
+  font-size: 14px;
+}
+
+ul.nav-tabs li.nav-item a.active {
+  border-color: transparent;
+  border-bottom: 3px solid #0072e5;
+}
+
+ul.nav-tabs li.nav-item a:hover {
+  border-color: transparent;
+  border-bottom: 3px solid #89b7e5;
+}
+
+ul.nav-tabs li.nav-item a.nav-link {
+  text-transform: uppercase;
+  color: #0072e5;
+  font-size: 14px;
+}
+
+

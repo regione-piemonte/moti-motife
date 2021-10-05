@@ -1,0 +1,155 @@
+{
+  "APP": {
+    "HIDE": "Hide",
+    "SHOW": "Show",
+    "ADD_CRITICAL_ISSUES": null,
+    "ADD_FINANCING": null,
+    "ADD_PHASE": null,
+    "AUTHORITY": "Authority",
+    "BACK": "Back",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Confirm",
+    "DELETE": "Delete",
+    "DELETE_CRITICAL_ISSUES": null,
+    "DELETE_FINANCING": null,
+    "DELETE_PHASE": null,
+    "EXIT": "Exit",
+    "EXPORT": null,
+    "INSERT_INTERVENTION": "Insert intervention",
+    "INSERT_INTERVENTION_DETAILS": "Insert intervention into the list",
+    "LIST_INTERVENTIONS": "Interventions List",
+    "LIST_INTERVENTIONS_DETAILS": "view all interventions",
+    "LOADING": "Loading...",
+    "MODIFY": "Modify",
+    "NO_DATA_FOUND": "No data found.",
+    "SAVE_CHANGES": null,
+    "SEARCH": "Search",
+    "SEARCH_INTERVENTION": "Search intervention",
+    "SEARCH_INTERVENTION_DETAILS": "Insert code for search an intervention",
+    "TITLE": "Monitoring Transversal Intervention - Piemonte"
+  },
+  "ERROR": {
+    "ERROR_TITLE": "Error",
+    "FIELD": {
+      "FISCAL_CODE": {
+        "INVALID": "Fiscal code invalid",
+        "INVALID_CHAR": "Fiscal code contains invalid chars",
+        "INVALID_LENGTH": "Fiscal code length error"
+      },
+      "REQUIRED": "Required data"
+    },
+    "POPUP_BLOCKED": "Please disable your Pop-up blocker and try again."
+  },
+  "FOOTER": {
+    "ACCESSIBILITY": "Accessibility",
+    "CALL_CENTER": "CALL CENTER",
+    "COOKIE_POLICY": "Cookie policy",
+    "GO_UP": "Go to top",
+    "PRIVACY": "Privacy",
+    "SUPPORT": "SUPPORT"
+  },
+  "HEADER": {
+    "MENU": "menu",
+    "ROLE": "Role",
+    "SETTORE": {
+      "DEFAULT_DESCRIPTION": "Please choose a Sector"
+    }
+  },
+  "INT": {
+    "INTERVENTION": {
+      "FIELD": {
+        "ACTUATOR": null,
+        "CIG": null,
+        "CODE": null,
+        "COST_PLANNED": null,
+        "CRITICAL_DESC": null,
+        "CRITICAL_SITUATION": null,
+        "CRITICAL_TYPE": null,
+        "CUP": null,
+        "DATA_SOURCE": null,
+        "DATA_SOURCE_IMPLEMENTATION": null,
+        "DATA_SOURCE_PROGRAMMING": null,
+        "DATE_END_EFFECTIVE": null,
+        "DATE_END_EXPECTED": null,
+        "ECONOMIC_NOTES": null,
+        "FINANCING_AMOUNT": null,
+        "FINANCING_DESC": null,
+        "FINANCING_SOURCE": null,
+        "LAST_SETTLEMENT_DATE": null,
+        "NOTE_IMPLEMENTATION": null,
+        "NOTE_PROGRAMMING": null,
+        "OTI_DATE_LAST_UPDATE": null,
+        "OTI_DESC_COSTS": null,
+        "OTI_DESC_DESIGN": null,
+        "OTI_DESC_NEXT_PHASE": null,
+        "OTI_FINANCING_AVAILABLE": null,
+        "OTI_FINANCING_NOT_AVAILABLE": null,
+        "OTI_RESPECT_OF_THE_TIMES": null,
+        "OTI_SUBJECTS_INVOLVED": null,
+        "OTI_YEAR_NEXT_PHASE": null,
+        "OTI_YEAR_OPERA_COMPLETION": null,
+        "OTI_YEAR_START_WORKS": null,
+        "PHASE": null,
+        "PLACE": null,
+        "REFERENT": null,
+        "RFERENCE_SOURCE": null,
+        "SECTOR": null,
+        "SOURCE": null,
+        "STATE_IMPLEMENTATION": null,
+        "TECNICAL_DESCR": null,
+        "TITLE": null,
+        "TYPOLOGY": null
+      },
+      "SECTION": {
+        "COSTS": null,
+        "CRITICAL_ISSUES": null,
+        "CRITICAL_ISSUES_COST_FINANCING": null,
+        "DATA_OTI": null,
+        "FINANCING": null,
+        "GENERAL_DATA": null,
+        "IMPLEMENTATION": null,
+        "IMPLEMENTATION_DESC": null,
+        "OTI_FINANCING": null,
+        "OTI_PROJECT_DETAIL": null,
+        "OTI_TIME_SCHEDULE": null,
+        "PROGRAMMING": null,
+        "PROGRAMMING_DESC": null,
+        "STATE_OF_IMPLEMENTATION": null
+      }
+    }
+  },
+  "LANGUAGE": {
+    "ENGLISH": "ENG",
+    "ITALIAN": "ITA"
+  },
+  "MESSAGES": {
+    "INT-INT-A-0004": null,
+    "INT-INT-P-0001": null,
+    "INT-INT-P-0002": null,
+    "INT-INT-P-0003": null,
+    "SYS-SYS-E-0007": null
+  },
+  "ORD": {
+    "DETAIL": {
+      "TAB_NAME": "Detail"
+    }
+  },
+  "PAGINATION": {
+    "FIRST": "First",
+    "INFO": "{{first}} - {{last}} of {{total}} elements",
+    "LAST": "Last",
+    "NEXT": "Next",
+    "PREV": "Prev."
+  },
+  "SIDEBAR": {
+    "HOME": "Home",
+    "INT": {
+      "INTERVENTION": {
+        "INSERT": null,
+        "SEARCH": null,
+        "TITLE": null
+      },
+      "TITLE": null
+    }
+  }
+}

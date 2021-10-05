@@ -1,0 +1,64 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+    <div class="moti-nav">
+        <a [routerLink]="['/']">&lt;&nbsp;&nbsp;&nbsp;{{ 'APP.BACK' | translate }}</a>
+
+        <ul class="nav float-right">
+            <li>
+                <button type="button" class="btn btn-primary ml-auto" (click)="onClickInserisci()">{{
+                    'APP.INSERT_INTERVENTION' | translate }}</button>
+            </li>
+        </ul>
+    </div>
+
+    <ngb-accordion #accordionRicerca id="accordion-ricerca" [activeIds]="activeIds" class="accordion-moti">
+        <ngb-panel id="panelRicerca">
+            <ng-template ngbPanelHeader let-opened="opened">
+                <div class="d-flex align-items-center justify-content-between"
+                    (click)="accordionRicerca.toggle('panelRicerca')">
+                    <span class="moti-accordion-title">
+                        <img src="assets/img/filtri.png">
+                        {{ 'INT.INTERVENTION.SECTION.SEARCH' | translate }}
+                    </span>
+
+                    <span class="moti-accordion-button" *ngIf="numFiltri() == 1">
+                        {{ numFiltri() }}
+                        {{ 'INT.INTERVENTION.SECTION.FILTER_APPLIED' | translate }}
+                    </span>
+                    <span class="moti-accordion-button" *ngIf="numFiltri() > 1">
+                        {{ numFiltri() }}
+                        {{ 'INT.INTERVENTION.SECTION.FILTERS_APPLIED' | translate }}
+                    </span>
+
+                    <span class="btn btn-link p-0 moti-accordion-button">
+                        {{ (opened ? 'APP.HIDE' : 'APP.SHOW') | translate }}
+                        &nbsp;
+                        <i class="fas fa-angle-up rotate-icon" *ngIf="opened"></i>
+                        <i class="fas fa-angle-down rotate-icon" *ngIf="!opened"></i>
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template ngbPanelContent>
+
+                <moti-form-ricerca-intervento [ricercaIntervento]="ricercaIntervento"
+                    (datiForm)="onSalvaDatiRicerca($event)" (datiRicerca)="onCercaIntervento($event)">
+                </moti-form-ricerca-intervento>
+
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+
+    <div class="row-1">
+        &nbsp;
+    </div>
+
+    <moti-risultati-ricerca-intervento *ngIf="ricercaEffettuata" [pagedResponse]="pagedResponse"
+        [currentPaginationData]="currentPaginationData" (changePaginationData)="onChangePaginationData($event)"
+        [ricercaIntervento]="ricercaIntervento">
+    </moti-risultati-ricerca-intervento>
+
+</div>
